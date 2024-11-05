@@ -1,0 +1,14 @@
+[
+    {
+        "commentId": 1,
+        "username": "더미 작성자 1",
+        "time": "yyyy-mm-dd hh:mm:ss",
+        "content": "댓글 내용"
+    },
+    {
+        "commentId": 2,
+        "username": "더미 작성자 2",
+        "time": "yyyy-mm-dd hh:mm:ss",
+        "content": "댓글 내용"
+    }
+]

@@ -1,0 +1,24 @@
+[
+    {
+        "postId": 1,
+        "title": "제목 1",
+        "username": "더미 작성자 1",
+        "createdAt": "yyyy-mm-dd hh:mm:ss",
+        "likes": 123,
+        "comments": 123,
+        "views": 1234,
+        "postImage": "example.jpg",
+        "postContent": "게시글 내용"
+    },
+    {
+        "postId": 2,
+        "title": "제목 2",
+        "username": "더미 작성자 2",
+        "createdAt": "yyyy-mm-dd hh:mm:ss",
+        "likes": 123,
+        "comments": 123,
+        "views": 1234,
+        "postImage": "example.jpg",
+        "postContent": "게시글 내용"
+    }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "email": "test@test.com",
+    "password": "Test1234!",
+    "username": "test",
+    "profileImage": ""
+  },
+  {
+    "email": "naver@naver.com",
+    "password": "Naver1234!",
+    "username": "naver",
+    "profileImage": ""
+  },
+  {
+    "email": "example@example.com",
+    "password": "Example1234!",
+    "username": "example",
+    "profileImage": ""
+  }
+]

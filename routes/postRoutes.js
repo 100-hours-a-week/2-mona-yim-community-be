@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer';
 import {
     getPosts,
     getPost,
@@ -13,10 +14,22 @@ import {
     deleteComment,
 } from '../controllers/commentController.js';
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'images/');
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
+    },
+});
+
+const upload = multer({ storage });
+
 const router = express.Router();
 
 router.get('/posts', getPosts);
-router.post('/posts', uploadPost);
+router.post('/posts', upload.single('postImage'), uploadPost);
 router.get('/posts/:id', getPost);
 router.patch('/posts/:id', editPost);
 router.delete('/posts/:id', deletePost);

@@ -23,13 +23,106 @@
   },
   {
     "postId": 3,
-    "title": "제목 3",
-    "username": "더미 작성자 1",
+    "title": "새로운 게시글",
+    "username": "니누",
+    "time": "2024-11-08 16:38:27",
+    "likes": 0,
+    "comments": 0,
+    "views": 0,
+    "postImage": "",
+    "postContent": "쿠쿠카캌"
+  },
+  {
+    "postId": 4,
+    "title": "제목 5",
+    "username": "naver",
     "time": "yyyy-mm-dd hh:mm:ss",
     "likes": 123,
     "comments": 123,
     "views": 1234,
     "postImage": "example.jpg",
-    "postContent": "게시글 내용"
+    "postContent": "게시글 추가기능"
+  },
+  {
+    "postId": 5,
+    "title": "test",
+    "time": "2024-11-12 22:28:35",
+    "likes": "0",
+    "comments": "0",
+    "views": "0",
+    "postImage": null,
+    "postContent": "test"
+  },
+  {
+    "postId": 6,
+    "title": "testtt",
+    "time": "2024-11-12 22:30:19",
+    "likes": "0",
+    "comments": "0",
+    "views": "0",
+    "postImage": null,
+    "postContent": "testsrtse"
+  },
+  {
+    "postId": 7,
+    "title": "testtt",
+    "time": "2024-11-12 22:30:20",
+    "likes": "0",
+    "comments": "0",
+    "views": "0",
+    "postImage": null,
+    "postContent": "testsrtse"
+  },
+  {
+    "postId": 8,
+    "title": "tt",
+    "time": "2024-11-12 22:30:56",
+    "likes": "0",
+    "comments": "0",
+    "views": "0",
+    "postImage": null,
+    "postContent": "tt"
+  },
+  {
+    "postId": 9,
+    "title": "ddd",
+    "time": "2024-11-12 22:31:23",
+    "likes": "0",
+    "comments": "0",
+    "views": "0",
+    "postImage": null,
+    "postContent": "dddd"
+  },
+  {
+    "postId": 10,
+    "title": "ss",
+    "time": "2024-11-12 22:31:52",
+    "likes": "0",
+    "comments": "0",
+    "views": "0",
+    "postImage": null,
+    "postContent": "sss"
+  },
+  {
+    "postId": 11,
+    "title": "ss",
+    "username": "naver",
+    "time": "2024-11-12 22:40:56",
+    "likes": "0",
+    "comments": "0",
+    "views": "0",
+    "postImage": null,
+    "postContent": "sssss"
+  },
+  {
+    "postId": 12,
+    "title": "이미지랑 룰룰랄라",
+    "username": "naver",
+    "time": "2024-11-12 22:53:01",
+    "likes": "0",
+    "comments": "0",
+    "views": "0",
+    "postContent": "응앵아ㅏㅣ앙",
+    "postImage": "1731419581581-850370354-photo_3.jpeg"
   }
 ]

@@ -1,18 +1,27 @@
-import { getAllUsers, addUser } from '../models/userModel.js';
+import { getAllUsers, writeUser } from '../models/userModel.js';
 
 export const loginUser = async (req, res) => {
+    if (req.session.sessionId) {
+        return res.redirect('/posts');
+    }
     const { email, password } = req.body;
     try {
         const users = await getAllUsers();
-        const user = users.find((user) => user.email === email);
+        const user = users.find(
+            (user) => user.email === email && user.password === password,
+        );
 
         if (user) {
-            res.status(200).json({ message: '로그인 성공' });
+            req.session.sessionId = user.userId;
+            console.log(req.session);
+            return res.status(200).json({ message: '로그인 성공' });
         } else {
-            res.status(401).json({ message: '로그인 실패' });
+            return res.status(401).json({ message: '로그인 실패' });
         }
     } catch (error) {
-        res.status(500).json({ message: '로그인 에러', error: error.message });
+        return res
+            .status(500)
+            .json({ message: '로그인 에러', error: error.message });
     }
 };
 
@@ -21,9 +30,9 @@ export const usernameCheck = async (req, res) => {
     const users = await getAllUsers();
     const existUser = users.find((user) => user.username === username);
     if (!existUser) {
-        res.status(200).json({ message: '닉네임 사용가능' });
+        return res.status(200).json({ message: '닉네임 사용가능' });
     } else {
-        res.status(409).json({ message: '중복된 닉네임' });
+        return res.status(409).json({ message: '중복된 닉네임' });
     }
 };
 
@@ -32,29 +41,58 @@ export const emailCheck = async (req, res) => {
     const users = await getAllUsers();
     const existEmail = users.find((user) => user.email === email);
     if (!existEmail) {
-        res.status(200).json({ message: '이메일 사용가능' });
+        return res.status(200).json({ message: '이메일 사용가능' });
     } else {
-        res.status(409).json({ message: '중복된 이메일' });
+        return res.status(409).json({ message: '중복된 이메일' });
     }
 };
 
 export const signinUser = async (req, res) => {
-    const { email, username } = req.body;
     const users = await getAllUsers();
-    const existUser = users.find((user) => user.username === username);
-    const existEmail = users.find((user) => user.email === email);
+    const userData = req.body;
+    const profileImagePath = req.file ? req.file.filename : null;
+    const existUser = users.find((user) => user.username === userData.username);
+    const existEmail = users.find((user) => user.email === userData.email);
     if (!existUser && !existEmail) {
-        addUser(req.body);
-        res.status(201).json({ message: '회원 가입 완료' });
+        const userId =
+            users.length > 0 ? users[users.length - 1].userId + 1 : 1;
+        const newUserData = {
+            userId,
+            ...userData,
+            profileImage: profileImagePath,
+        };
+        users.push(newUserData);
+        await writeUser(users);
+        return res.status(201).json({ message: '회원 가입 완료' });
     } else {
-        res.status(400).json({ message: '회원 가입 실패' });
+        return res.status(400).json({ message: '회원 가입 실패' });
     }
 };
 
-export const editProfile = async (req, res) => {};
+export const editProfile = async (req, res) => {
+    const { userId, username, profileImage } = req.body;
+    const users = await getAllUsers();
+    const userIndex = users.findIndex((user) => user.userId === userId);
+    users[userIndex] = { ...users[userIndex], username };
+    await writeUser(users);
+    return res.status(200).json({ message: '닉네임 수정 완료' });
+};
 
-export const editPassword = async (req, res) => {};
+export const editPassword = async (req, res) => {
+    const { userId, password } = req.body;
+    const users = await getAllUsers();
+    const userIndex = users.findIndex((user) => user.userId === userId);
+    users[userIndex] = { ...users[userIndex], password };
+    await writeUser(users);
+    return res.status(200).json({ message: '비밀번호 수정 완료' });
+};
 
-export const deleteUser = async (req, res) => {};
+export const deleteUser = async (req, res) => {
+    const users = await getAllUsers();
+    const userId = req.body.userId;
+    const deletedUsers = users.filter((user) => user.userId !== userId);
+    await writeUser(deletedUsers);
+    return res.status(204).json({ message: '회원탈퇴 완료' });
+};
 
 export const logoutUser = async (req, res) => {};

@@ -17,12 +17,20 @@ export async function getAllUsers() {
     }
 }
 
-export async function addUser(newUserData) {
+export async function getUserById(userId) {
     try {
-        const data = await fs.readFile(dataPath, 'utf-8');
-        const users = JSON.parse(data);
-        users.push(newUserData);
-        await fs.writeFile(dataPath, JSON.stringify(users, null, 2));
+        const users = await getAllUsers();
+        const user = users.find((user) => user.userId === userId);
+        return user;
+    } catch (error) {
+        console.error('유저 데이터 읽는 도중 에러: ', error);
+        throw error;
+    }
+}
+
+export async function writeUser(user) {
+    try {
+        await fs.writeFile(dataPath, JSON.stringify(user, null, 2));
     } catch (error) {
         console.error('새로운 유저 데이터 삽입 에러: ', error);
         throw error;

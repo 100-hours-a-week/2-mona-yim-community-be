@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer';
 import {
     loginUser,
     signinUser,
@@ -9,10 +10,22 @@ import {
     deleteUser,
 } from '../controllers/userController.js';
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'images/');
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
+    },
+});
+
+const upload = multer({ storage });
+
 const router = express.Router();
 
-router.post('/users/login', loginUser);
-router.post('/users/signin', signinUser);
+router.post('/', loginUser);
+router.post('/signin', upload.single('profileImage'), signinUser);
 router.post('/users/email/check', emailCheck);
 router.post('/users/username/check', usernameCheck);
 router.patch('/users/profile', editProfile);

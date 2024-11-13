@@ -4,7 +4,7 @@
     "email": "test@test.com",
     "password": "Test2222!",
     "username": "test2",
-    "profileImage": ""
+    "profileImage": null
   },
   {
     "userId": 2,
@@ -17,21 +17,7 @@
     "userId": 3,
     "email": "example@example.com",
     "password": "Start1234!",
-    "username": "스타트업코드",
-    "profileImage": ""
-  },
-  {
-    "userId": 4,
-    "email": "new@new.com",
-    "password": "New0000!",
-    "username": "졸리당",
-    "profileImage": ""
-  },
-  {
-    "userId": 5,
-    "email": "pic@pic.com",
-    "password": "Pic0000!",
-    "username": "picture",
-    "profileImage": "1731419659026-947240865-photo_2.jpeg"
+    "username": "숭이",
+    "profileImage": "1731462833000-955005519-photo_1.jpeg"
   }
 ]

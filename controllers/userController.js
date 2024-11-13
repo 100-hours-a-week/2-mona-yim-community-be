@@ -1,4 +1,4 @@
-import { getAllUsers, writeUser } from '../models/userModel.js';
+import { getAllUsers, writeUser, deleteImage } from '../models/userModel.js';
 
 export const loginUser = async (req, res) => {
     if (req.session.sessionId) {
@@ -70,12 +70,21 @@ export const signinUser = async (req, res) => {
 };
 
 export const editProfile = async (req, res) => {
-    const { userId, username, profileImage } = req.body;
+    const { userId, username } = req.body;
     const users = await getAllUsers();
-    const userIndex = users.findIndex((user) => user.userId === userId);
-    users[userIndex] = { ...users[userIndex], username };
+    const userIndex = users.findIndex((user) => user.userId === Number(userId));
+
+    const profileImagePath = req.file
+        ? req.file.filename
+        : users[userIndex].profileImage;
+    if (req.file) deleteImage(users[userIndex].profileImage);
+    users[userIndex] = {
+        ...users[userIndex],
+        username,
+        profileImage: profileImagePath,
+    };
     await writeUser(users);
-    return res.status(200).json({ message: '닉네임 수정 완료' });
+    return res.status(200).json({ message: '프로필 수정 완료' });
 };
 
 export const editPassword = async (req, res) => {
@@ -90,6 +99,8 @@ export const editPassword = async (req, res) => {
 export const deleteUser = async (req, res) => {
     const users = await getAllUsers();
     const userId = req.body.userId;
+    const user = users.find((user) => user.userId === userId);
+    deleteImage(user.profileImage);
     const deletedUsers = users.filter((user) => user.userId !== userId);
     await writeUser(deletedUsers);
     return res.status(204).json({ message: '회원탈퇴 완료' });

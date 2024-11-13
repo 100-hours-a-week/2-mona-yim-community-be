@@ -36,3 +36,18 @@ export async function writeUser(user) {
         throw error;
     }
 }
+
+export async function deleteImage(userImage) {
+    if (userImage === null || userImage === '') return;
+    const userImagePath = `../images/${userImage}`;
+    if (userImagePath) {
+        const filePath = path.join(__dirname, userImagePath);
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error('파일 삭제 실패:', err);
+            } else {
+                console.log('파일 삭제 성공');
+            }
+        });
+    }
+}

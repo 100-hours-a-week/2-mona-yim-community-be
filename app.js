@@ -1,8 +1,13 @@
 import express from 'express';
 import session from 'express-session';
 import cors from 'cors';
+import path from 'path';
 import postRoutes from './routes/postRoutes.js';
 import userRoutes from './routes/userRoutes.js';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = 3000;
@@ -25,6 +30,7 @@ app.use(
 
 app.use(postRoutes);
 app.use(userRoutes);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.listen(PORT, () => {
     console.log(`Backend server is running on http://localhost:${PORT}`);

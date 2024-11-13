@@ -1,4 +1,9 @@
-import { getAllPosts, getPostById, writePost } from '../models/postModel.js';
+import {
+    getAllPosts,
+    getPostById,
+    writePost,
+    deletePostImage,
+} from '../models/postModel.js';
 import { getUserById } from '../models/userModel.js';
 
 export const getPosts = async (req, res) => {
@@ -31,7 +36,6 @@ export const uploadPost = async (req, res) => {
     postData.username = user.username;
     const postId = posts.length > 0 ? posts[posts.length - 1].postId + 1 : 1;
     const postImagePath = req.file ? req.file.filename : null;
-    console.log(req.body.postImage);
     const newPostData = { postId, ...postData, postImage: postImagePath };
     posts.push(newPostData);
     await writePost(posts);
@@ -43,12 +47,18 @@ export const editPost = async (req, res) => {
     const postId = parseInt(req.params.id, 10);
     const newPostData = req.body;
     const postIndex = posts.findIndex((post) => post.postId === postId);
-
     if (postIndex === -1) {
         return res.status(404).json({ message: '존재하지않는 게시글' });
     }
 
     posts[postIndex] = { ...posts[postIndex], ...newPostData };
+    if (req.file) {
+        deletePostImage(posts[postIndex].postImage);
+        posts[postIndex] = {
+            ...posts[postIndex],
+            postImage: req.file.filename,
+        };
+    }
     await writePost(posts);
 
     return res.status(200).json({ message: '게시글 수정 성공' });
@@ -57,6 +67,8 @@ export const editPost = async (req, res) => {
 export const deletePost = async (req, res) => {
     const posts = await getAllPosts();
     const postId = parseInt(req.params.id, 10);
+    const post = posts.find((post) => post.postId === postId);
+    deletePostImage(post.postImage);
     const deletedPosts = posts.filter((post) => post.postId !== postId);
     if (posts.length === deletedPosts.length)
         return res.status(404).json({ message: '존재하지않는 게시글' });

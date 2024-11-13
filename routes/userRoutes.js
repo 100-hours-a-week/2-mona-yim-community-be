@@ -28,7 +28,8 @@ router.post('/', loginUser);
 router.post('/signin', upload.single('profileImage'), signinUser);
 router.post('/users/email/check', emailCheck);
 router.post('/users/username/check', usernameCheck);
-router.patch('/users/profile', editProfile);
+router.patch('/users/profile', upload.single('profileImage'), editProfile);
+// router.patch('/users/profile', editProfile);
 router.patch('/users/password', editPassword);
 router.delete('/users/delete', deleteUser);
 

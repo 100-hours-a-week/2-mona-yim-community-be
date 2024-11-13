@@ -1,68 +1,35 @@
 [
-    {
-        "postId": 1,
-        "title": "제목 1",
-        "username": "더미 작성자 1",
-        "time": "yyyy-mm-dd hh:mm:ss",
-        "likes": 123,
-        "comments": 123,
-        "views": 1234,
-        "postImage": "example.jpg",
-        "postContent": "게시글 내용"
-    },
-    {
-        "postId": 2,
-        "title": "제목 2",
-        "username": "더미 작성자 2",
-        "time": "yyyy-mm-dd hh:mm:ss",
-        "likes": 123,
-        "comments": 123,
-        "views": 1234,
-        "postImage": "example.jpg",
-        "postContent": "게시글 내용"
-    },
-    {
-        "postId": 3,
-        "title": "새로운 게시글",
-        "username": "니누",
-        "time": "2024-11-08 16:38:27",
-        "likes": 0,
-        "comments": 0,
-        "views": 0,
-        "postImage": "",
-        "postContent": "쿠쿠카캌"
-    },
-    {
-        "postId": 4,
-        "title": "제목 5",
-        "username": "naver",
-        "time": "yyyy-mm-dd hh:mm:ss",
-        "likes": 123,
-        "comments": 123,
-        "views": 1234,
-        "postImage": "example.jpg",
-        "postContent": "게시글 추가기능"
-    },
-    {
-        "postId": 5,
-        "title": "이미지랑 룰룰랄라",
-        "username": "naver",
-        "time": "2024-11-12 22:53:01",
-        "likes": "0",
-        "comments": "0",
-        "views": "0",
-        "postContent": "응앵아ㅏㅣ앙",
-        "postImage": "1731419581581-850370354-photo_3.jpeg"
-    },
-    {
-        "postId": 6,
-        "title": "수정",
-        "username": "naver",
-        "time": "2024-11-13 17:39:15",
-        "likes": "0",
-        "comments": "0",
-        "views": "0",
-        "postContent": "우하하",
-        "postImage": "1731487417149-70993973-shit_monkey.jpeg"
-    }
+  {
+    "postId": 1,
+    "title": "공숭",
+    "username": "냐옹이",
+    "time": "2024-11-13 21:36:46",
+    "likes": "0",
+    "comments": "0",
+    "views": "0",
+    "postContent": "공손한 원숭이 입니다.",
+    "postImage": "1731501406665-608503439-polite_monkey.jpeg"
+  },
+  {
+    "postId": 2,
+    "title": "놀숭",
+    "username": "냐옹이",
+    "time": "2024-11-13 21:37:05",
+    "likes": "0",
+    "comments": "0",
+    "views": "0",
+    "postContent": "놀란 원숭이입니다",
+    "postImage": "1731501425162-448231303-surprised_monkey.jpeg"
+  },
+  {
+    "postId": 3,
+    "title": "똥순",
+    "username": "냐옹이",
+    "time": "2024-11-13 21:37:19",
+    "likes": "0",
+    "comments": "0",
+    "views": "0",
+    "postContent": "똥마려운숭이입니다",
+    "postImage": "1731501439189-602438504-shit_monkey.jpeg"
+  }
 ]

@@ -107,3 +107,12 @@ export const deleteUser = async (req, res) => {
 };
 
 export const logoutUser = async (req, res) => {};
+
+export const userInfo = async (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+    const users = await getAllUsers();
+    const user = users.find((user) => user.userId === userId);
+    return res
+        .status(200)
+        .json({ username: user.username, profileImage: user.profileImage });
+};

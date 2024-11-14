@@ -33,7 +33,7 @@ export const uploadPost = async (req, res) => {
     // const userId = req.session.sessionId;
     const user = await getUserById(2); // temp userId
     const postData = req.body;
-    postData.username = user.username;
+    postData.userId = user.userId;
     const postId = posts.length > 0 ? posts[posts.length - 1].postId + 1 : 1;
     const postImagePath = req.file ? req.file.filename : null;
     const newPostData = { postId, ...postData, postImage: postImagePath };

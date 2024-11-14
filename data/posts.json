@@ -2,7 +2,7 @@
   {
     "postId": 1,
     "title": "공숭",
-    "username": "냐옹이",
+    "userId": 2,
     "time": "2024-11-13 21:36:46",
     "likes": "0",
     "comments": "0",
@@ -13,7 +13,7 @@
   {
     "postId": 2,
     "title": "놀숭",
-    "username": "냐옹이",
+    "userId": 1,
     "time": "2024-11-13 21:37:05",
     "likes": "0",
     "comments": "0",
@@ -24,12 +24,23 @@
   {
     "postId": 3,
     "title": "똥순",
-    "username": "냐옹이",
+    "userId": 3,
     "time": "2024-11-13 21:37:19",
     "likes": "0",
     "comments": "0",
     "views": "0",
     "postContent": "똥마려운숭이입니다",
     "postImage": "1731501439189-602438504-shit_monkey.jpeg"
+  },
+  {
+    "postId": 4,
+    "title": "오늘은 목요일",
+    "userId": 1,
+    "time": "2024-11-14 10:59:05",
+    "likes": "0",
+    "comments": "0",
+    "views": "0",
+    "postContent": "빨리 금욜와라",
+    "postImage": "1731549545866-337981534-photo_1.jpeg"
   }
 ]

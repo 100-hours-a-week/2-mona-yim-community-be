@@ -13,6 +13,11 @@ import {
     editComment,
     deleteComment,
 } from '../controllers/commentController.js';
+import {
+    likePost,
+    unlikePost,
+    likeStatusPost,
+} from '../controllers/likeController.js';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -33,6 +38,10 @@ router.post('/posts', upload.single('postImage'), uploadPost);
 router.get('/posts/:id', getPost);
 router.patch('/posts/:id', upload.single('postImage'), editPost);
 router.delete('/posts/:id', deletePost);
+
+router.get('/posts/:id/like', likeStatusPost);
+router.post('/posts/:id/like', likePost);
+router.delete('/posts/:id/unlike', unlikePost);
 
 router.get('/posts/:id/comments', getComments);
 router.post('/posts/:id/comments', uploadComment);

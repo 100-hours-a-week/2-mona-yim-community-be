@@ -1,6 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import {
+    selfInfo,
     userInfo,
     loginUser,
     signinUser,
@@ -26,6 +27,7 @@ const upload = multer({ storage });
 const router = express.Router();
 
 router.post('/', loginUser);
+router.get('/users/me', selfInfo);
 router.get('/users/:id', userInfo);
 router.post('/signin', upload.single('profileImage'), signinUser);
 router.post('/users/email/check', emailCheck);

@@ -5,7 +5,7 @@ import { deleteAllLikeByUserId } from './likeController.js';
 import { deleteAllPostByUserId } from './postController.js';
 
 export const loginUser = async (req, res) => {
-    if (req.session.sessionId) res.redirect('/posts');
+    // if (req.session.sessionId) return res.redirect('/posts');
 
     const { email, password } = req.body;
     try {
@@ -20,7 +20,6 @@ export const loginUser = async (req, res) => {
 
         if (user) {
             req.session.sessionId = user.userId;
-            console.log(req.session);
             return res.status(200).json({ message: '로그인 성공' });
         } else {
             return res.status(401).json({ message: '로그인 실패' });
@@ -79,7 +78,8 @@ export const signinUser = async (req, res) => {
 };
 
 export const editProfile = async (req, res) => {
-    const { userId, username } = req.body;
+    const userId = req.session.sessionId;
+    const { username } = req.body;
     const users = await getAllUsers();
     const userIndex = users.findIndex((user) => user.userId === Number(userId));
 
@@ -97,10 +97,12 @@ export const editProfile = async (req, res) => {
 };
 
 export const editPassword = async (req, res) => {
-    const { userId, password } = req.body;
+    console.log(req.session.sessionId);
+    const userId = req.session.sessionId;
+    const { password } = req.body;
     const users = await getAllUsers();
     const userIndex = users.findIndex((user) => user.userId === userId);
-    const hashedPassword = hashPassword(password);
+    const hashedPassword = await hashPassword(password);
     users[userIndex] = { ...users[userIndex], password: hashedPassword };
     await writeUser(users);
     return res.status(200).json({ message: '비밀번호 수정 완료' });
@@ -108,7 +110,7 @@ export const editPassword = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     const users = await getAllUsers();
-    const userId = req.body.userId;
+    const userId = req.session.sessionId;
     const user = users.find((user) => user.userId === userId);
     deleteImage(user.profileImage);
     const deletedUsers = users.filter((user) => user.userId !== userId);
@@ -123,6 +125,17 @@ export const logoutUser = async (req, res) => {};
 
 export const userInfo = async (req, res) => {
     const userId = parseInt(req.params.id, 10);
+    const users = await getAllUsers();
+    const user = users.find((user) => user.userId === userId);
+    return res.status(200).json({
+        username: user.username,
+        email: user.email,
+        profileImage: user.profileImage,
+    });
+};
+
+export const selfInfo = async (req, res) => {
+    const userId = req.session.sessionId;
     const users = await getAllUsers();
     const user = users.find((user) => user.userId === userId);
     return res.status(200).json({

@@ -9,13 +9,7 @@ import { deleteAllCommentByPostId } from './commentController.js';
 import { deleteAllLikeByPostId } from './likeController.js';
 
 export const getPosts = async (req, res) => {
-    console.log(req.session);
-    if (!req.session.sessionId) {
-        console.log('session 없음');
-    } else {
-        console.log('session 존재');
-    }
-
+    console.log(req.session.sessionId);
     const posts = await getAllPosts();
     res.status(200).json(posts);
 };
@@ -33,8 +27,8 @@ export const getPost = async (req, res) => {
 
 export const uploadPost = async (req, res) => {
     const posts = await getAllPosts();
-    // const userId = req.session.sessionId;
-    const user = await getUserById(2); // temp userId
+    const userId = await req.session.sessionId;
+    const user = await getUserById(userId);
     const postData = req.body;
     postData.userId = user.userId;
     const postId = posts.length > 0 ? posts[posts.length - 1].postId + 1 : 1;
@@ -47,13 +41,16 @@ export const uploadPost = async (req, res) => {
 
 export const editPost = async (req, res) => {
     const posts = await getAllPosts();
+    const userId = await req.session.sessionId;
     const postId = parseInt(req.params.id, 10);
     const newPostData = req.body;
     const postIndex = posts.findIndex((post) => post.postId === postId);
     if (postIndex === -1) {
         return res.status(404).json({ message: '존재하지않는 게시글' });
     }
-
+    if (posts[postIndex].userId !== userId) {
+        return res.status(400).json({ message: '게시글 수정 권한 없음' });
+    }
     posts[postIndex] = { ...posts[postIndex], ...newPostData };
     if (req.file) {
         deletePostImage(posts[postIndex].postImage);

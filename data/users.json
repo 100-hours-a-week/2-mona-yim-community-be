@@ -1,9 +1,16 @@
 [
-    {
-        "userId": 1,
-        "email": "pig@pig.com",
-        "password": "$2b$10$b.OX86CfSodBffXw5H9uUuv8keQl3l2AxurkmOvGgHG3sfGxBprcC",
-        "username": "돼지",
-        "profileImage": "1731999306573-60427141-ABCOM_202203_1000x1000_CharacterDimensio_MinionPig_Movie.webp"
-    }
+  {
+    "userId": 1,
+    "email": "pig@pig.com",
+    "password": "$2b$10$uOtqVoBzeDbN4C/3hRRowOc7/wXBvG6WOOMTNgi1TnVZv7bKd3zJu",
+    "username": "돼지냥이",
+    "profileImage": "1731999306573-60427141-ABCOM_202203_1000x1000_CharacterDimensio_MinionPig_Movie.webp"
+  },
+  {
+    "userId": 2,
+    "email": "cat@cat.com",
+    "password": "$2b$10$F84eU.3MKOIzCazk.RY0Ueyr2/ogmn9kPrG14Y58PjsD3we8CvHZa",
+    "username": "냐옹이",
+    "profileImage": "1732024521168-479595233-profile_image.jpg"
+  }
 ]

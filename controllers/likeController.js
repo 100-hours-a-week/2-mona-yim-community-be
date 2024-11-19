@@ -1,10 +1,10 @@
-import { getAllLikes, getLikesById, writeLike } from '../models/likeModel.js';
+import { getAllLikes, writeLike } from '../models/likeModel.js';
 import { editLikeCount } from '../models/postModel.js';
 
 export const likeStatusPost = async (req, res) => {
     const postId = parseInt(req.params.id, 10);
     const likes = await getAllLikes();
-    const userId = 1; // temp
+    const userId = await req.session.sessionId;
 
     const isLiked = likes.some(
         (like) => like.postId === postId && like.userId === userId,
@@ -16,34 +16,33 @@ export const likeStatusPost = async (req, res) => {
 
 export const likePost = async (req, res) => {
     const likes = await getAllLikes();
-    const likeData = req.body;
-    likes.push(likeData);
+    const postId = parseInt(req.params.id, 10);
+    const userId = await req.session.sessionId;
+    likes.push({
+        postId: postId,
+        userId: userId,
+    });
     await writeLike(likes);
-    const likeCount = likes.filter(
-        (like) => like.postId === likeData.postId,
-    ).length;
-    await editLikeCount(likeData.postId, likeCount);
+    const likeCount = likes.filter((like) => like.postId === postId).length;
+    await editLikeCount(postId, likeCount);
     return res.status(201).json({ likes: likeCount.toString() });
 };
 
 export const unlikePost = async (req, res) => {
     const likes = await getAllLikes();
-    const likeData = req.body;
+    const postId = parseInt(req.params.id, 10);
+    const userId = await req.session.sessionId;
 
     const newLikes = likes.filter(
-        (like) =>
-            !(
-                like.userId === likeData.userId &&
-                like.postId === likeData.postId
-            ),
+        (like) => !(like.userId === userId && like.postId === postId),
     );
 
     await writeLike(newLikes);
 
     const likeCount =
-        newLikes.filter((like) => like.postId === likeData.postId).length || 0;
+        newLikes.filter((like) => like.postId === postId).length || 0;
 
-    await editLikeCount(likeData.postId, likeCount);
+    await editLikeCount(postId, likeCount);
 
     return res.status(201).json({ likes: likeCount });
 };

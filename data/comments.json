@@ -1,1 +1,37 @@
-
+[
+  {
+    "commentId": 1,
+    "postId": 2,
+    "userId": 1,
+    "time": "2024-11-14 10:57:58",
+    "content": "ㅎㅇㅎㅇㅎㅎ"
+  },
+  {
+    "commentId": 2,
+    "postId": 2,
+    "userId": 1,
+    "time": "2024-11-14 11:26:47",
+    "content": "화이팅"
+  },
+  {
+    "commentId": 3,
+    "postId": 2,
+    "userId": 1,
+    "time": "2024-11-19 21:02:11",
+    "content": "ddd\n"
+  },
+  {
+    "commentId": 4,
+    "postId": 3,
+    "userId": 1,
+    "time": "2024-11-19 22:43:19",
+    "content": "testcomment"
+  },
+  {
+    "commentId": 5,
+    "postId": 2,
+    "userId": 2,
+    "time": "2024-11-19 22:55:35",
+    "content": "이야"
+  }
+]

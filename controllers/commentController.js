@@ -12,8 +12,10 @@ export const getComments = async (req, res) => {
 
 export const uploadComment = async (req, res) => {
     const postId = parseInt(req.params.id, 10);
+    const userId = req.session.sessionId;
     const comments = await getAllComments();
     const commentData = req.body;
+    commentData.userId = userId;
     const commentId =
         comments.length > 0 ? comments[comments.length - 1].commentId + 1 : 1;
     const newCommentData = { commentId, ...commentData };
@@ -28,7 +30,6 @@ export const uploadComment = async (req, res) => {
 };
 
 export const editComment = async (req, res) => {
-    const postId = parseInt(req.params.id, 10);
     const commentId = parseInt(req.params.commentId, 10);
     const comments = await getAllComments();
     const newCommentData = req.body;

@@ -52,13 +52,27 @@ export async function deletePostImage(postImage) {
     }
 }
 
-export async function editLike(postId, likeCount) {
+export async function editLikeCount(postId, likeCount) {
     try {
         const rawData = await fs.readFile(dataPath, 'utf-8');
         const data = JSON.parse(rawData);
         const datumIndex = data.findIndex((datum) => datum.postId === postId);
         // if (datumIndex === -1)
         data[datumIndex].likes = likeCount.toString();
+        await writePost(data);
+    } catch (error) {
+        console.error('게시글 좋아요 수정 중 에러: ', error);
+        throw error;
+    }
+}
+
+export async function editCommentCount(postId, commentCount) {
+    try {
+        const rawData = await fs.readFile(dataPath, 'utf-8');
+        const data = JSON.parse(rawData);
+        const datumIndex = data.findIndex((datum) => datum.postId === postId);
+        // if (datumIndex === -1)
+        data[datumIndex].comments = commentCount.toString();
         await writePost(data);
     } catch (error) {
         console.error('게시글 좋아요 수정 중 에러: ', error);

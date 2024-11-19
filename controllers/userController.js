@@ -1,15 +1,22 @@
 import { getAllUsers, writeUser, deleteImage } from '../models/userModel.js';
+import { hashPassword, verifyPassword } from '../utils/function.js';
+import { deleteAllCommentByUserId } from './commentController.js';
+import { deleteAllLikeByUserId } from './likeController.js';
+import { deleteAllPostByUserId } from './postController.js';
 
 export const loginUser = async (req, res) => {
-    if (req.session.sessionId) {
-        return res.redirect('/posts');
-    }
+    if (req.session.sessionId) res.redirect('/posts');
+
     const { email, password } = req.body;
     try {
         const users = await getAllUsers();
-        const user = users.find(
-            (user) => user.email === email && user.password === password,
-        );
+        const matchPromises = users.map(async (tempUser) => {
+            const isMatch = await verifyPassword(password, tempUser.password);
+            return isMatch && tempUser.email === email ? tempUser : null;
+        });
+
+        const results = await Promise.all(matchPromises);
+        const user = results.find((result) => result !== null);
 
         if (user) {
             req.session.sessionId = user.userId;
@@ -56,9 +63,11 @@ export const signinUser = async (req, res) => {
     if (!existUser && !existEmail) {
         const userId =
             users.length > 0 ? users[users.length - 1].userId + 1 : 1;
+        const hashedPassword = await hashPassword(userData.password);
         const newUserData = {
             userId,
             ...userData,
+            password: hashedPassword,
             profileImage: profileImagePath,
         };
         users.push(newUserData);
@@ -91,7 +100,8 @@ export const editPassword = async (req, res) => {
     const { userId, password } = req.body;
     const users = await getAllUsers();
     const userIndex = users.findIndex((user) => user.userId === userId);
-    users[userIndex] = { ...users[userIndex], password };
+    const hashedPassword = hashPassword(password);
+    users[userIndex] = { ...users[userIndex], password: hashedPassword };
     await writeUser(users);
     return res.status(200).json({ message: '비밀번호 수정 완료' });
 };
@@ -103,6 +113,9 @@ export const deleteUser = async (req, res) => {
     deleteImage(user.profileImage);
     const deletedUsers = users.filter((user) => user.userId !== userId);
     await writeUser(deletedUsers);
+    await deleteAllPostByUserId(userId);
+    await deleteAllCommentByUserId(userId);
+    await deleteAllLikeByUserId(userId);
     return res.status(204).json({ message: '회원탈퇴 완료' });
 };
 
@@ -112,7 +125,9 @@ export const userInfo = async (req, res) => {
     const userId = parseInt(req.params.id, 10);
     const users = await getAllUsers();
     const user = users.find((user) => user.userId === userId);
-    return res
-        .status(200)
-        .json({ username: user.username, profileImage: user.profileImage });
+    return res.status(200).json({
+        username: user.username,
+        email: user.email,
+        profileImage: user.profileImage,
+    });
 };

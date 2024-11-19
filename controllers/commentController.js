@@ -1,9 +1,13 @@
 import { getAllComments, writeComment } from '../models/commentModel.js';
+import { editCommentCount } from '../models/postModel.js';
 
 export const getComments = async (req, res) => {
     const postId = parseInt(req.params.id, 10);
     const comments = await getAllComments();
-    res.status(200).json(comments);
+    const commentsById = comments.filter(
+        (comment) => comment.postId === postId,
+    );
+    res.status(200).json(commentsById);
 };
 
 export const uploadComment = async (req, res) => {
@@ -16,6 +20,10 @@ export const uploadComment = async (req, res) => {
     comments.push(newCommentData);
     if (!comments) return res.status(400).json({ message: '댓글 생성 실패' });
     writeComment(comments);
+    const commentCount = comments.filter(
+        (comment) => comment.postId === postId,
+    ).length;
+    await editCommentCount(postId, commentCount);
     return res.status(201).json({ message: '댓글 생성 성공' });
 };
 
@@ -47,5 +55,25 @@ export const deleteComment = async (req, res) => {
     if (comments.length === deletedComments.length)
         return res.status(404).json({ message: '존재하지않는 댓글' });
     writeComment(deletedComments);
+    const commentCount = deletedComments.filter(
+        (comment) => comment.postId === postId,
+    ).length;
+    await editCommentCount(postId, commentCount);
     return res.status(204).json({ message: '댓글 삭제 성공' });
 };
+
+export async function deleteAllCommentByPostId(postId) {
+    const comments = await getAllComments();
+    const filteredComments = comments.filter(
+        (comment) => comment.postId !== postId,
+    );
+    await writeComment(filteredComments);
+}
+
+export async function deleteAllCommentByUserId(userId) {
+    const comments = await getAllComments();
+    const filteredComments = comments.filter(
+        (comment) => comment.userId !== userId,
+    );
+    await writeComment(filteredComments);
+}

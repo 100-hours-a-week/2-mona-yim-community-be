@@ -5,13 +5,16 @@ import {
     deletePostImage,
 } from '../models/postModel.js';
 import { getUserById } from '../models/userModel.js';
+import { deleteAllCommentByPostId } from './commentController.js';
+import { deleteAllLikeByPostId } from './likeController.js';
 
 export const getPosts = async (req, res) => {
-    // if (!req.session.sessionId) {
-    //     console.log('session 없음');
-    // } else {
-    //     console.log('session 존재');
-    // }
+    console.log(req.session);
+    if (!req.session.sessionId) {
+        console.log('session 없음');
+    } else {
+        console.log('session 존재');
+    }
 
     const posts = await getAllPosts();
     res.status(200).json(posts);
@@ -73,5 +76,18 @@ export const deletePost = async (req, res) => {
     if (posts.length === deletedPosts.length)
         return res.status(404).json({ message: '존재하지않는 게시글' });
     await writePost(deletedPosts);
+    await deleteAllCommentByPostId(postId);
+    await deleteAllLikeByPostId(postId);
     return res.status(204).json({ message: '게시글 삭제 성공' });
 };
+
+export async function deleteAllPostByUserId(userId) {
+    const posts = await getAllPosts();
+    const postsByUserId = posts.filter((post) => post.userId === userId);
+    postsByUserId.forEach((post) => {
+        deleteAllCommentByPostId(post.postId);
+        deleteAllLikeByPostId(post.postId);
+    });
+    const filteredPosts = posts.filter((post) => post.userId !== userId);
+    writePost(filteredPosts);
+}

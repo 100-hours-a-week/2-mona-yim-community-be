@@ -1,5 +1,5 @@
 import { getAllLikes, getLikesById, writeLike } from '../models/likeModel.js';
-import { editLike } from '../models/postModel.js';
+import { editLikeCount } from '../models/postModel.js';
 
 export const likeStatusPost = async (req, res) => {
     const postId = parseInt(req.params.id, 10);
@@ -22,7 +22,7 @@ export const likePost = async (req, res) => {
     const likeCount = likes.filter(
         (like) => like.postId === likeData.postId,
     ).length;
-    await editLike(likeData.postId, likeCount);
+    await editLikeCount(likeData.postId, likeCount);
     return res.status(201).json({ likes: likeCount.toString() });
 };
 
@@ -43,7 +43,19 @@ export const unlikePost = async (req, res) => {
     const likeCount =
         newLikes.filter((like) => like.postId === likeData.postId).length || 0;
 
-    await editLike(likeData.postId, likeCount);
+    await editLikeCount(likeData.postId, likeCount);
 
     return res.status(201).json({ likes: likeCount });
 };
+
+export async function deleteAllLikeByPostId(postId) {
+    const likes = await getAllLikes();
+    const filteredLikes = likes.filter((like) => like.postId !== postId);
+    await writeLike(filteredLikes);
+}
+
+export async function deleteAllLikeByUserId(userId) {
+    const likes = await getAllLikes();
+    const filteredLikes = likes.filter((like) => like.userId !== userId);
+    await writeLike(filteredLikes);
+}

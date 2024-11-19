@@ -10,7 +10,7 @@ const dataPath = path.join(__dirname, '../data/users.json');
 export async function getAllUsers() {
     try {
         const data = await fs.readFile(dataPath, 'utf-8');
-        return JSON.parse(data);
+        return data ? JSON.parse(data) : null;
     } catch (error) {
         console.error('유저 데이터 읽는 도중 에러: ', error);
         throw error;

@@ -1,46 +1,14 @@
 [
-  {
-    "postId": 1,
-    "title": "공숭",
-    "userId": 2,
-    "time": "2024-11-13 21:36:46",
-    "likes": "2",
-    "comments": "0",
-    "views": "0",
-    "postContent": "공손한 원숭이 입니다.",
-    "postImage": "1731501406665-608503439-polite_monkey.jpeg"
-  },
-  {
-    "postId": 2,
-    "title": "놀숭",
-    "userId": 1,
-    "time": "2024-11-13 21:37:05",
-    "likes": "1",
-    "comments": "0",
-    "views": "0",
-    "postContent": "놀란 원숭이입니다",
-    "postImage": "1731501425162-448231303-surprised_monkey.jpeg"
-  },
-  {
-    "postId": 3,
-    "title": "똥순",
-    "userId": 3,
-    "time": "2024-11-13 21:37:19",
-    "likes": "1",
-    "comments": "0",
-    "views": "0",
-    "postContent": "똥마려운숭이입니다",
-    "postImage": "1731501439189-602438504-shit_monkey.jpeg"
-  },
-  {
-    "postId": 4,
-    "title": "오늘은 목요일",
-    "userId": 1,
-    "time": "2024-11-14 10:59:05",
-    "likes": "1",
-    "comments": "0",
-    "views": "0",
-    "postContent": "빨리 금욜와라",
-    "postImage": "1731549545866-337981534-photo_1.jpeg"
-  }
+    {
+        "postId": 1,
+        "title": "공숭",
+        "userId": 1,
+        "time": "2024-11-13 21:36:46",
+        "likes": "0",
+        "comments": "0",
+        "views": "0",
+        "postContent": "공손한 원숭이 입니다.",
+        "postImage": "1731501406665-608503439-polite_monkey.jpeg",
+        "comment": "0"
+    }
 ]

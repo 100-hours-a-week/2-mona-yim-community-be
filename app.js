@@ -12,7 +12,12 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 3000;
 
-app.use(cors());
+app.use(
+    cors({
+        origin: 'http://localhost:4000', // 클라이언트 주소
+        credentials: true, // 쿠키를 허용
+    }),
+);
 app.use(express.json());
 
 app.use(

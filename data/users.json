@@ -1,23 +1,9 @@
 [
-  {
-    "userId": 1,
-    "email": "coco@coco.com",
-    "password": "Coco0000!",
-    "username": "코코숭",
-    "profileImage": "1731501283027-631433192-photo_3.jpeg"
-  },
-  {
-    "userId": 2,
-    "email": "cat@cat.com",
-    "password": "Cat0000!",
-    "username": "냐옹이",
-    "profileImage": "1731501315228-64770242-profile_image.jpg"
-  },
-  {
-    "userId": 3,
-    "email": "pig@pig.com",
-    "password": "Pig0000!",
-    "username": "뒤룩돼지",
-    "profileImage": "1731501349388-358986129-ABCOM_202203_1000x1000_CharacterDimensio_MinionPig_Movie.webp"
-  }
+    {
+        "userId": 1,
+        "email": "pig@pig.com",
+        "password": "$2b$10$b.OX86CfSodBffXw5H9uUuv8keQl3l2AxurkmOvGgHG3sfGxBprcC",
+        "username": "돼지",
+        "profileImage": "1731999306573-60427141-ABCOM_202203_1000x1000_CharacterDimensio_MinionPig_Movie.webp"
+    }
 ]

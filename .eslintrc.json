@@ -1,24 +1,26 @@
 {
     "env": {
-        "browser": true,
-        "es2021": true,
-        "node": true
+        "browser": true, // 브라우저 환경 활성화
+        "es2021": true, // 최신 ECMAScript 활성화
+        "node": true, // Node.js 환경 활성화 (process 등 사용 가능)
+        "process": true
     },
     "extends": [
-        "eslint:recommended",
-        "airbnb-base",
-        "plugin:prettier/recommended"
+        "eslint:recommended", // 기본 ESLint 규칙
+        "airbnb-base", // Airbnb 스타일 가이드
+        "plugin:prettier/recommended" // Prettier와 ESLint 통합
     ],
     "parserOptions": {
-        "ecmaVersion": 2022,
-        "sourceType": "module"
+        "ecmaVersion": 2022, // ECMAScript 최신 버전 사용
+        "sourceType": "module" // 모듈 방식 활성화 (import/export 사용 가능)
     },
     "globals": {
-        "assert": "readonly"
+        "assert": "readonly", // 추가 글로벌 변수 (readonly 상태로 설정)
+        "process": "readonly" // Node.js의 process 글로벌 변수 활성화
     },
     "rules": {
-        "prettier/prettier": ["error"],
-        "indent": ["error", 4],
-        "no-console": "off"
+        "prettier/prettier": ["error"], // Prettier 규칙을 ESLint에 통합
+        "indent": ["error", 4], // 들여쓰기 4칸
+        "no-console": "off" // console 사용 허용
     }
 }

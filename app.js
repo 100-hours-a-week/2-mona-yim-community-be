@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import session from 'express-session';
 import cors from 'cors';
@@ -5,12 +6,14 @@ import path from 'path';
 import postRoutes from './routes/postRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { fileURLToPath } from 'url';
+import process from 'process';
+import bodyParser from 'body-parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.DB_PORT || 3000;
 
 app.use(
     cors({
@@ -19,6 +22,7 @@ app.use(
     }),
 );
 app.use(express.json());
+app.use(bodyParser.json());
 
 app.use(
     session({

@@ -1,47 +1,35 @@
 [
   {
     "postId": 1,
-    "title": "공숭",
-    "userId": 1,
-    "time": "2024-11-13 21:36:46",
-    "likes": "1",
-    "comments": "0",
-    "views": "0",
-    "postContent": "공손한 원숭이 입니다.",
+    "title": "첫 게시글",
+    "time": "2024-11-20T03:53:54.000Z",
+    "likes": 1,
+    "comments": 3,
+    "views": 0,
+    "postContent": "새로운 내용",
     "postImage": "1731501406665-608503439-polite_monkey.jpeg",
-    "comment": "0"
+    "userId": 1
   },
   {
     "postId": 2,
-    "title": "dd",
-    "userId": 1,
-    "time": "2024-11-19 20:59:43",
-    "likes": "1",
-    "comments": "4",
-    "views": "0",
-    "postContent": "dddd",
-    "postImage": null
+    "title": "냐옹이의 하루",
+    "time": "2024-11-20T03:58:15.000Z",
+    "likes": 1,
+    "comments": 0,
+    "views": 0,
+    "postContent": "오늘 츄르 두개나 먹음 ㅋㅋ",
+    "postImage": "1732024767042-60131693-background.png",
+    "userId": 2
   },
   {
     "postId": 3,
-    "title": "test",
-    "userId": 1,
-    "time": "2024-11-19 22:12:58",
-    "likes": "1",
-    "comments": "1",
-    "views": "0",
-    "postContent": "estet",
-    "postImage": null
-  },
-  {
-    "postId": 4,
-    "title": "hello",
-    "userId": 2,
-    "time": "2024-11-19 22:59:27",
-    "likes": "0",
-    "comments": "0",
-    "views": "0",
-    "postContent": "호로롤",
-    "postImage": "1732024767042-60131693-background.png"
+    "title": "집사 짜증남",
+    "time": "2024-11-20T04:38:52.000Z",
+    "likes": 1,
+    "comments": 0,
+    "views": 0,
+    "postContent": "집사가 외출해서 나 놀아주지도 않았으면서 와서는 간식도 안줌",
+    "postImage": "postImage3.jpg",
+    "userId": 2
   }
 ]

@@ -24,11 +24,11 @@ export async function getUserLogin(email) {
 export async function getUserById(userId) {
     try {
         const connection = await pool.getConnection();
-        const rows = await connection.query(
+        const [rows] = await connection.query(
             `SELECT * FROM Users WHERE userId = ${userId}`,
         );
         connection.release();
-        return rows[0];
+        return rows;
     } catch (error) {
         console.error('유저 데이터 읽는 도중 에러: ', error);
         throw error;

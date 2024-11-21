@@ -61,7 +61,7 @@ export const emailCheck = async (req, res) => {
     } else {
         return res.status(409).json({ message: '중복된 이메일' });
     }
-}; //test 안해봄
+};
 
 export const signinUser = async (req, res) => {
     const userData = req.body;
@@ -83,8 +83,7 @@ export const signinUser = async (req, res) => {
 };
 
 export const editProfile = async (req, res) => {
-    // const userId = req.session.sessionId;
-    const userId = 4;
+    const userId = req.session.sessionId;
     const userData = req.body;
     const profileImagePath = req.file ? req.file.filename : null;
     const newUserData = { ...userData, profileImage: profileImagePath };
@@ -94,8 +93,7 @@ export const editProfile = async (req, res) => {
 };
 
 export const editPassword = async (req, res) => {
-    // const userId = req.session.sessionId;
-    const userId = 4;
+    const userId = req.session.sessionId;
     const { password } = req.body;
     const hashedPassword = await hashPassword(password);
     await patchPassword(hashedPassword, userId);
@@ -103,13 +101,26 @@ export const editPassword = async (req, res) => {
 };
 
 export const removeUser = async (req, res) => {
-    const userId = 5;
-    // const userId = req.session.sessionId;
+    const userId = req.session.sessionId;
     deleteUser(userId);
     return res.status(204).json({ message: '회원탈퇴 완료' });
 };
 
-export const logoutUser = async (req, res) => {};
+export const logoutUser = async (req, res) => {
+    try {
+        if (req.session.sessionId) {
+            delete req.session.sessionId; // sessionId 속성 제거
+            return res.status(200).json({ message: '로그아웃 성공' });
+        } else {
+            return res.status(400).json({ message: '로그인 상태가 아닙니다.' });
+        }
+    } catch (error) {
+        console.error('로그아웃 처리 중 에러: ', error.message);
+        return res
+            .status(500)
+            .json({ message: '로그아웃 에러', error: error.message });
+    }
+};
 
 export const userInfo = async (req, res) => {
     const userId = parseInt(req.params.id, 10);
@@ -122,8 +133,7 @@ export const userInfo = async (req, res) => {
 };
 
 export const selfInfo = async (req, res) => {
-    // const userId = req.session.sessionId;
-    const userId = 1;
+    const userId = req.session.sessionId;
     const user = await getUserById(userId);
     return res.status(200).json({
         username: user.username,

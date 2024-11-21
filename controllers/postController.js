@@ -24,12 +24,11 @@ export const getPost = async (req, res) => {
 };
 
 export const uploadPost = async (req, res) => {
-    const userId = 1;
-    // const userId = await req.session.sessionId;
+    const userId = await req.session.sessionId;
     const postData = await req.body;
     const postImagePath = req.file ? req.file.filename : null;
     const newPostData = { ...postData, postImage: postImagePath };
-    postPost(userId, newPostData);
+    await postPost(userId, newPostData);
     return res.status(201).json({ message: '게시글 생성 성공' });
 };
 
@@ -39,7 +38,6 @@ export const editPost = async (req, res) => {
     const postData = req.body;
     const postImagePath = req.file ? req.file.filename : null;
     const newPostData = { ...postData, postImage: postImagePath };
-    console.log(newPostData);
     await patchPost(postId, newPostData);
 
     // if (postIndex === -1) {

@@ -6,8 +6,6 @@ import pool from '../db.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const dataPath = path.join(__dirname, '../data/posts.json');
-
 export async function getAllPosts() {
     try {
         const connection = await pool.getConnection();
@@ -23,11 +21,12 @@ export async function getAllPosts() {
 export async function getPostById(postId) {
     try {
         const connection = await pool.getConnection();
-        const rows = await connection.query(
-            `SELECT * FROM Posts WHERE postId = ${postId}`,
+        const [rows] = await connection.query(
+            `SELECT * FROM Posts WHERE postId = ?`,
+            [postId],
         );
         connection.release();
-        return rows[0];
+        return rows;
     } catch (error) {
         console.error('게시글 데이터 읽는 도중 에러: ', error);
         throw error;
@@ -99,15 +98,6 @@ export async function deletePost(postId) {
         connection.release();
     } catch (error) {
         console.error('게시글 삭제 에러: ', error);
-        throw error;
-    }
-}
-
-export async function writePost(posts) {
-    try {
-        await fs.writeFile(dataPath, JSON.stringify(posts, null, 2));
-    } catch (error) {
-        console.error('게시글 추가 도중 에러: ', error);
         throw error;
     }
 }

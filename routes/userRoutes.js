@@ -10,6 +10,7 @@ import {
     editProfile,
     editPassword,
     removeUser,
+    logoutUser,
 } from '../controllers/userController.js';
 
 const storage = multer.diskStorage({
@@ -27,6 +28,7 @@ const upload = multer({ storage });
 const router = express.Router();
 
 router.post('/', loginUser);
+router.post('/logout', logoutUser);
 router.get('/users/me', selfInfo);
 router.get('/users/:id', userInfo);
 router.post('/signin', upload.single('profileImage'), signinUser);

@@ -1,10 +1,8 @@
 import {
     deleteComment,
-    getAllComments,
     getCommentsById,
     patchComment,
     postComment,
-    writeComment,
 } from '../models/commentModel.js';
 import { editCommentCount } from '../models/postModel.js';
 
@@ -16,8 +14,7 @@ export const getComments = async (req, res) => {
 
 export const uploadComment = async (req, res) => {
     const postId = parseInt(req.params.id, 10);
-    const userId = 1;
-    // const userId = req.session.sessionId;
+    const userId = req.session.sessionId;
     const commentData = await req.body;
     await postComment(userId, postId, commentData);
     await editCommentCount(postId);
@@ -52,19 +49,3 @@ export const removeComment = async (req, res) => {
     await editCommentCount(postId);
     return res.status(204).json({ message: '댓글 삭제 성공' });
 };
-
-export async function deleteAllCommentByPostId(postId) {
-    const comments = await getAllComments();
-    const filteredComments = comments.filter(
-        (comment) => comment.postId !== postId,
-    );
-    await writeComment(filteredComments);
-}
-
-export async function deleteAllCommentByUserId(userId) {
-    const comments = await getAllComments();
-    const filteredComments = comments.filter(
-        (comment) => comment.userId !== userId,
-    );
-    await writeComment(filteredComments);
-}

@@ -2,6 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import pool from '../db.js';
+import { deletePost } from './postModel.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -31,6 +32,22 @@ export async function getUserById(userId) {
         return rows;
     } catch (error) {
         console.error('유저 데이터 읽는 도중 에러: ', error);
+        throw error;
+    }
+}
+
+export async function postUsernameEdit(username, userId) {
+    try {
+        const connection = await pool.getConnection();
+        const [rows] = await connection.query(
+            `SELECT EXISTS (SELECT 1 FROM Users WHERE username = ? AND userId != ?) AS userExists`,
+            [username, userId],
+        );
+
+        connection.release();
+        return rows.userExists;
+    } catch (error) {
+        console.error('닉네임 읽는 도중 에러: ', error);
         throw error;
     }
 }
@@ -91,11 +108,11 @@ export async function patchUser(userId, userData) {
     try {
         const connection = await pool.getConnection();
         if (userData.profileImage) {
-            const deleteImageName = await connection.query(
-                `SELECT postImage From Posts Where userId = ?;`,
+            const [deleteImageName] = await connection.query(
+                `SELECT profileImage From Users Where userId = ?;`,
                 [userId],
             );
-            deleteImage(deleteImageName);
+            deleteImage(deleteImageName.profileImage);
             await connection.query(
                 `UPDATE Users SET username = ?, profileImage = ? WHERE userId = ?;`,
                 [userData.username, userData.profileImage, userId],
@@ -130,12 +147,22 @@ export async function patchPassword(userId, password) {
 export async function deleteUser(userId) {
     try {
         const connection = await pool.getConnection();
+        // post 사진들 지우기
+        const [postToBeDeleted] = await connection.query(
+            `SELECT postId From Posts Where userId = ?;`,
+            [userId],
+        );
 
-        const deleteImageName = await connection.query(
+        for (const eachPost of postToBeDeleted) {
+            await deletePost(eachPost.postId);
+        }
+
+        // user 프로필 사진 지우기
+        const [deleteImageName] = await connection.query(
             `SELECT profileImage From Users Where userId = ?;`,
             [userId],
         );
-        deleteImage(deleteImageName);
+        deleteImage(deleteImageName.profileImage);
 
         await connection.query(`DELETE FROM Users WHERE userId = ?;`, [userId]);
         connection.release();

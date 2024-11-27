@@ -7,6 +7,7 @@ import {
     patchPassword,
     deleteUser,
     getUserLogin,
+    postUsernameEdit,
 } from '../models/userModel.js';
 import { hashPassword, verifyPassword } from '../utils/function.js';
 
@@ -45,11 +46,24 @@ export const loginUser = async (req, res) => {
 
 export const usernameCheck = async (req, res) => {
     const { username } = req.query;
-    const existUser = await postUsername(username);
-    if (!existUser) {
-        return res.status(200).json({ message: '닉네임 사용가능' });
-    } else {
-        return res.status(409).json({ message: '중복된 닉네임' });
+    // 프로필 편짐시
+    if (req.session.sessionId) {
+        const userId = req.session.sessionId;
+        const existUser = await postUsernameEdit(username, userId);
+        if (existUser) {
+            return res.status(409).json({ message: '중복된 닉네임' });
+        } else {
+            return res.status(200).json({ message: '닉네임 사용가능' });
+        }
+    }
+    // 회원가입시
+    else {
+        const existUser = await postUsername(username);
+        if (!existUser) {
+            return res.status(200).json({ message: '닉네임 사용가능' });
+        } else {
+            return res.status(409).json({ message: '중복된 닉네임' });
+        }
     }
 };
 

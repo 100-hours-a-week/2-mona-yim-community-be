@@ -57,11 +57,11 @@ export async function patchPost(postId, postData) {
     try {
         const connection = await pool.getConnection();
         if (postData.postImage) {
-            const deleteImageName = await connection.query(
+            const [deleteImageName] = await connection.query(
                 `SELECT postImage From Posts Where postId = ?;`,
                 [postId],
             );
-            deletePostImage(deleteImageName);
+            deletePostImage(deleteImageName.postImage);
             await connection.query(
                 `UPDATE Posts SET title = ?, postContent = ?, postImage = ? WHERE postId = ?;`,
                 [
@@ -88,11 +88,11 @@ export async function deletePost(postId) {
     try {
         const connection = await pool.getConnection();
 
-        const deleteImageName = await connection.query(
+        const [deleteImageName] = await connection.query(
             `SELECT postImage From Posts Where postId = ?;`,
             [postId],
         );
-        deletePostImage(deleteImageName);
+        deletePostImage(deleteImageName.postImage);
 
         await connection.query(`DELETE FROM Posts WHERE postId = ?;`, [postId]);
         connection.release();

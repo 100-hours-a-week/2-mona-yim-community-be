@@ -21,6 +21,10 @@ export async function getAllPosts() {
 export async function getPostById(postId) {
     try {
         const connection = await pool.getConnection();
+        await connection.query(
+            `UPDATE Posts SET views = views +  1 WHERE postId = ?`,
+            [postId],
+        );
         const [rows] = await connection.query(
             `SELECT * FROM Posts WHERE postId = ?`,
             [postId],

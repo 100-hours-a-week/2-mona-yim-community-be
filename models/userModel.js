@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import pool from '../db.js';
-import { deletePost } from './postModel.js';
+import { deletePostImage } from './postModel.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -148,13 +148,13 @@ export async function deleteUser(userId) {
     try {
         const connection = await pool.getConnection();
         // post 사진들 지우기
-        const [postToBeDeleted] = await connection.query(
-            `SELECT postId From Posts Where userId = ?;`,
+        const postToBeDeleted = await connection.query(
+            `SELECT postImage From Posts Where userId = ?;`,
             [userId],
         );
 
         for (const eachPost of postToBeDeleted) {
-            await deletePost(eachPost.postId);
+            await deletePostImage(eachPost.postImage);
         }
 
         // user 프로필 사진 지우기

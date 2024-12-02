@@ -6,14 +6,13 @@ import path from 'path';
 import postRoutes from './routes/postRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { fileURLToPath } from 'url';
-import process from 'process';
 import bodyParser from 'body-parser';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = process.env.DB_PORT || 3000;
+const PORT = 3000;
 
 app.use(
     cors({
@@ -37,8 +36,8 @@ app.use(
     }),
 );
 
-app.use(postRoutes);
-app.use(userRoutes);
+app.use('/api', postRoutes);
+app.use('/api', userRoutes);
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.listen(PORT, () => {

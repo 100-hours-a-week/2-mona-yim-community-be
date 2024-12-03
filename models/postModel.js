@@ -9,7 +9,9 @@ const __dirname = path.dirname(__filename);
 export async function getAllPosts() {
     try {
         const connection = await pool.getConnection();
-        const rows = await connection.query('SELECT * FROM Posts');
+        const rows = await connection.query(
+            'SELECT * FROM Posts ORDER BY postID DESC',
+        );
         connection.release();
         return rows;
     } catch (error) {

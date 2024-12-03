@@ -4,7 +4,7 @@ export async function getCommentsById(postId) {
     try {
         const connection = await pool.getConnection();
         const rows = await connection.query(
-            `SELECT * FROM Comments WHERE postId = ?;`,
+            `SELECT * FROM Comments WHERE postId = ? ORDER BY commentId ASC;`,
             [postId],
         );
         connection.release();

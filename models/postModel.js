@@ -7,47 +7,37 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export async function getAllPosts() {
-    let connection;
     try {
-        connection = await pool.getConnection();
-        const rows = await connection.query(
+        const [rows] = await pool.query(
             'SELECT * FROM Posts ORDER BY postID DESC',
         );
         return rows;
     } catch (error) {
         console.error('게시글 데이터 읽는 도중 에러: ', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
 }
 
 export async function getPostById(postId) {
-    let connection;
     try {
-        connection = await pool.getConnection();
-        await connection.query(
+        await pool.query(
             `UPDATE Posts SET views = views +  1 WHERE postId = ?`,
             [postId],
         );
-        const [rows] = await connection.query(
+        const [rows] = await pool.query(
             `SELECT * FROM Posts WHERE postId = ?`,
             [postId],
         );
-        return rows;
+        return rows[0];
     } catch (error) {
         console.error('게시글 데이터 읽는 도중 에러: ', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
 }
 
 export async function postPost(userId, postData) {
-    let connection;
     try {
-        connection = await pool.getConnection();
-        await connection.query(
+        await pool.query(
             `INSERT INTO Posts (title, time, postImage, postContent, userId) VALUES (?, ?, ?, ?, ?);`,
             [
                 postData.title,
@@ -60,22 +50,18 @@ export async function postPost(userId, postData) {
     } catch (error) {
         console.error('게시글 추가 에러: ', error);
         throw error;
-    } finally {
-        connection.release();
     }
 }
 
 export async function patchPost(postId, postData) {
-    let connection;
     try {
-        connection = await pool.getConnection();
         if (postData.postImage) {
-            const [deleteImageName] = await connection.query(
+            const [deleteImageName] = await pool.query(
                 `SELECT postImage From Posts Where postId = ?;`,
                 [postId],
             );
-            deletePostImage(deleteImageName.postImage);
-            await connection.query(
+            deletePostImage(deleteImageName[0].postImage);
+            await pool.query(
                 `UPDATE Posts SET title = ?, postContent = ?, postImage = ? WHERE postId = ?;`,
                 [
                     postData.title,
@@ -85,7 +71,7 @@ export async function patchPost(postId, postData) {
                 ],
             );
         } else {
-            await connection.query(
+            await pool.query(
                 `UPDATE Posts SET title = ?, postContent = ? WHERE postId = ?;`,
                 [postData.title, postData.postContent, postId],
             );
@@ -93,28 +79,21 @@ export async function patchPost(postId, postData) {
     } catch (error) {
         console.error('게시글 데이터 수정 도중 에러: ', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
 }
 
 export async function deletePost(postId) {
-    let connection;
     try {
-        connection = await pool.getConnection();
-
-        const [deleteImageName] = await connection.query(
+        const [deleteImageName] = await pool.query(
             `SELECT postImage From Posts Where postId = ?;`,
             [postId],
         );
-        deletePostImage(deleteImageName.postImage);
+        deletePostImage(deleteImageName[0].postImage);
 
-        await connection.query(`DELETE FROM Posts WHERE postId = ?;`, [postId]);
+        await pool.query(`DELETE FROM Posts WHERE postId = ?;`, [postId]);
     } catch (error) {
         console.error('게시글 삭제 에러: ', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
 }
 
@@ -134,16 +113,14 @@ export async function deletePostImage(postImage) {
 }
 
 export async function editLikeCount(postId) {
-    let connection;
     try {
-        connection = await pool.getConnection();
-        const [rows] = await connection.query(
+        const [rows] = await pool.query(
             `SELECT COUNT(*) AS likeCount FROM Likes WHERE postId = ?;`,
             [postId],
         );
-        const likeCount = Number(rows.likeCount);
+        const likeCount = Number(rows[0].likeCount);
 
-        await connection.query(`UPDATE Posts SET likes = ? WHERE postId = ?;`, [
+        await pool.query(`UPDATE Posts SET likes = ? WHERE postId = ?;`, [
             likeCount,
             postId,
         ]);
@@ -151,29 +128,23 @@ export async function editLikeCount(postId) {
     } catch (error) {
         console.error('게시글 좋아요 수정 중 에러: ', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
 }
 
 export async function editCommentCount(postId) {
-    let connection;
     try {
-        connection = await pool.getConnection();
-        const [rows] = await connection.query(
+        const [rows] = await pool.query(
             `SELECT COUNT(*) AS commentCount FROM Comments WHERE postId = ?;`,
             [postId],
         );
-        const commentCount = Number(rows.commentCount);
+        const commentCount = Number(rows[0].commentCount);
 
-        await connection.query(
+        await pool.query(
             `UPDATE Posts SET comments = ? WHERE postId = ?;`,
             [commentCount, postId],
         );
     } catch (error) {
         console.error('댓글수 수정 중 에러: ', error);
         throw error;
-    } finally {
-        if (connection) connection.release();
     }
 }

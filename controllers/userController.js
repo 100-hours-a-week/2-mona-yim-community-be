@@ -22,7 +22,6 @@ export const loginUser = async (req, res) => {
 
     try {
         const user = await getUserLogin(email);
-
         // 유저가 존재하지 않거나 비밀번호 불일치 시
         if (!user || !(await verifyPassword(password, user.password))) {
             return res

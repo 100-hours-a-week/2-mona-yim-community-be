@@ -16,7 +16,7 @@ const PORT = 3000;
 
 app.use(
     cors({
-        origin: 'http://15.165.75.46:4000', // 클라이언트 주소
+        origin: 'http://15.165.75.46', // 클라이언트 주소
         credentials: true, // 쿠키를 허용
     }),
 );

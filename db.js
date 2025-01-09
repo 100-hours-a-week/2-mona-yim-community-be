@@ -14,7 +14,6 @@ const pool = mysql.createPool({
 });
 
 console.log('Database pool initialized');
-console.log(pool);
 
 // SHOW TABLES 쿼리 실행 및 출력
 /*

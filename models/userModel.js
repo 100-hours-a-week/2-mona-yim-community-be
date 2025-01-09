@@ -64,6 +64,7 @@ export async function postEmail(email) {
             `SELECT EXISTS (SELECT 1 FROM Users WHERE email = ?) AS userExists`,
             [email],
         );
+        console.log('중복확인: ', row);
         return rows[0].userExists;
     } catch (error) {
         console.error('이메일 읽는 도중 에러: ', error);

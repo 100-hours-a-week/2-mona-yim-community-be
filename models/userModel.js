@@ -3,7 +3,7 @@
 // import { fileURLToPath } from 'url';
 import pool from '../db.js';
 // import { deletePostImage } from './postModel.js';
-import { deleteImage } from '../routes/postRoutes.js';
+import { deleteImage } from './imageModel.js';
 
 // const __filename = fileURLToPath(import.meta.url);
 // const __dirname = path.dirname(__filename);

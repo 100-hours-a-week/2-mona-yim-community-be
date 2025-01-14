@@ -135,7 +135,7 @@ export async function deleteUser(userId) {
         );
 
         for (const eachPost of postToBeDeleted) {
-            await deletePostImage(eachPost.postImage);
+            await deleteImage(eachPost.postImage);
         }
 
         // user 프로필 사진 지우기

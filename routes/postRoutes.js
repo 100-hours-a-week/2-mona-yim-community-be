@@ -64,7 +64,7 @@ export async function deleteImage(imageName) {
     if (!imageName) return;
 
     // S3에서 삭제할 Key 설정
-    const key = `uploads/${postImage}`;
+    const key = `uploads/${imageName}`;
 
     const params = {
         Bucket: process.env.AWS_S3_BUCKET_NAME,

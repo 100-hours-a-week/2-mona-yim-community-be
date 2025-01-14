@@ -89,6 +89,7 @@ export async function deletePost(postId) {
             `SELECT postImage From Posts Where postId = ?;`,
             [postId],
         );
+        console.log(deleteImageName);
         deleteImage(deleteImageName[0].postImage);
 
         await pool.query(`DELETE FROM Posts WHERE postId = ?;`, [postId]);

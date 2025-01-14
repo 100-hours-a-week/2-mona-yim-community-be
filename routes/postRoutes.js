@@ -61,8 +61,8 @@ const uploadFileToS3 = async (file) => {
 
 // S3 삭제 함수
 export async function deleteImage(imageName) {
-    if (imageName == null) return;
     console.log('들어옴');
+    if (imageName === null) return;
     // S3에서 삭제할 Key 설정
     const key = `uploads/${imageName}`;
     console.log(key);

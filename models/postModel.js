@@ -91,6 +91,7 @@ export async function deletePost(postId) {
         );
         const imageName = deleteImageName[0].postImage;
         console.log(imageName);
+        console.log(typeof imageName);
         await deleteImage(imageName);
 
         console.log('before');

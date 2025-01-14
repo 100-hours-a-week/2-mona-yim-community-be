@@ -21,7 +21,6 @@ export async function deleteImage(imageName) {
     }
     // S3에서 삭제할 Key 설정
     const key = `images/${imageName}`;
-    console.log(key);
     const params = {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: key,

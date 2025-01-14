@@ -47,7 +47,6 @@ const uploadFileToS3 = async (file) => {
         Key: `uploads/${imageName}`,
         Body: file.buffer,
         ContentType: file.mimetype,
-        ACL: 'public-read', // ACL 설정 제거 가능 (필요에 따라 변경)
     };
 
     const command = new PutObjectCommand(params);

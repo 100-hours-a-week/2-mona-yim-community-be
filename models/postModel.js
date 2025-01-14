@@ -1,10 +1,11 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+// import { promises as fs } from 'fs';
+// import path from 'path';
+// import { fileURLToPath } from 'url';
 import pool from '../db.js';
+import deleteImage from '../routes/postRoutes.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 export async function getAllPosts() {
     try {
@@ -60,7 +61,7 @@ export async function patchPost(postId, postData) {
                 `SELECT postImage From Posts Where postId = ?;`,
                 [postId],
             );
-            deletePostImage(deleteImageName[0].postImage);
+            deleteImage(deleteImageName[0].postImage);
             await pool.query(
                 `UPDATE Posts SET title = ?, postContent = ?, postImage = ? WHERE postId = ?;`,
                 [
@@ -88,7 +89,7 @@ export async function deletePost(postId) {
             `SELECT postImage From Posts Where postId = ?;`,
             [postId],
         );
-        deletePostImage(deleteImageName[0].postImage);
+        deleteImage(deleteImageName[0].postImage);
 
         await pool.query(`DELETE FROM Posts WHERE postId = ?;`, [postId]);
     } catch (error) {
@@ -97,20 +98,20 @@ export async function deletePost(postId) {
     }
 }
 
-export async function deletePostImage(postImage) {
-    if (postImage === null || postImage === '') return;
-    const postImagePath = `../images/${postImage}`;
-    if (postImagePath) {
-        const filePath = path.join(__dirname, postImagePath);
-        fs.unlink(filePath, (err) => {
-            if (err) {
-                console.error('파일 삭제 실패:', err);
-            } else {
-                console.log('파일 삭제 성공');
-            }
-        });
-    }
-}
+// export async function deletePostImage(postImage) {
+//     if (postImage === null || postImage === '') return;
+//     const postImagePath = `../images/${postImage}`;
+//     if (postImagePath) {
+//         const filePath = path.join(__dirname, postImagePath);
+//         fs.unlink(filePath, (err) => {
+//             if (err) {
+//                 console.error('파일 삭제 실패:', err);
+//             } else {
+//                 console.log('파일 삭제 성공');
+//             }
+//         });
+//     }
+// }
 
 export async function editLikeCount(postId) {
     try {
@@ -139,10 +140,10 @@ export async function editCommentCount(postId) {
         );
         const commentCount = Number(rows[0].commentCount);
 
-        await pool.query(
-            `UPDATE Posts SET comments = ? WHERE postId = ?;`,
-            [commentCount, postId],
-        );
+        await pool.query(`UPDATE Posts SET comments = ? WHERE postId = ?;`, [
+            commentCount,
+            postId,
+        ]);
     } catch (error) {
         console.error('댓글수 수정 중 에러: ', error);
         throw error;

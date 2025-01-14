@@ -1,11 +1,12 @@
-import { promises as fs } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+// import { promises as fs } from 'fs';
+// import path from 'path';
+// import { fileURLToPath } from 'url';
 import pool from '../db.js';
 import { deletePostImage } from './postModel.js';
+import { deleteImage } from '../routes/postRoutes.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 export async function getUserLogin(email) {
     try {
@@ -115,10 +116,10 @@ export async function patchUser(userId, userData) {
 
 export async function patchPassword(userId, password) {
     try {
-        await pool.query(
-            `UPDATE Users SET password = ?  WHERE userId = ?;`,
-            [password, userId],
-        );
+        await pool.query(`UPDATE Users SET password = ?  WHERE userId = ?;`, [
+            password,
+            userId,
+        ]);
     } catch (error) {
         console.error('비밀번호 수정 도중 에러: ', error);
         throw error;
@@ -148,20 +149,20 @@ export async function deleteUser(userId) {
     } catch (error) {
         console.error('회원 삭제 에러: ', error);
         throw error;
-    } 
-}
-
-export async function deleteImage(userImage) {
-    if (userImage === null || userImage === '') return;
-    const userImagePath = `../images/${userImage}`;
-    if (userImagePath) {
-        const filePath = path.join(__dirname, userImagePath);
-        fs.unlink(filePath, (err) => {
-            if (err) {
-                console.error('파일 삭제 실패:', err);
-            } else {
-                console.log('파일 삭제 성공');
-            }
-        });
     }
 }
+
+// export async function deleteImage(userImage) {
+//     if (userImage === null || userImage === '') return;
+//     const userImagePath = `../images/${userImage}`;
+//     if (userImagePath) {
+//         const filePath = path.join(__dirname, userImagePath);
+//         fs.unlink(filePath, (err) => {
+//             if (err) {
+//                 console.error('파일 삭제 실패:', err);
+//             } else {
+//                 console.log('파일 삭제 성공');
+//             }
+//         });
+//     }
+// }

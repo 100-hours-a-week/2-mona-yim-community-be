@@ -1,7 +1,11 @@
 /* eslint-disable no-undef */
 import express from 'express';
 import multer from 'multer';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import {
+    S3Client,
+    PutObjectCommand,
+    DeleteObjectCommand,
+} from '@aws-sdk/client-s3';
 import dotenv from 'dotenv';
 import {
     getPosts,
@@ -54,6 +58,27 @@ const uploadFileToS3 = async (file) => {
 
     return imageName;
 };
+
+// S3 삭제 함수
+export async function deleteImage(imageName) {
+    if (!imageName) return;
+
+    // S3에서 삭제할 Key 설정
+    const key = `uploads/${postImage}`;
+
+    const params = {
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: key,
+    };
+
+    try {
+        const command = new DeleteObjectCommand(params);
+        await s3.send(command);
+        console.log('S3 파일 삭제 성공:', key);
+    } catch (error) {
+        console.error('S3 파일 삭제 실패:', error);
+    }
+}
 
 const router = express.Router();
 

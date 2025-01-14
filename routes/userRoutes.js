@@ -2,8 +2,20 @@
 import express from 'express';
 import multer from 'multer';
 import multerS3 from 'multer-s3';
-import AWS from 'aws-sdk';
+import AWS from 'aws-sdk'; // AWS SDK 가져오기
 import dotenv from 'dotenv';
+import {
+    selfInfo,
+    userInfo,
+    loginUser,
+    signinUser,
+    usernameCheck,
+    emailCheck,
+    editProfile,
+    editPassword,
+    removeUser,
+    logoutUser,
+} from '../controllers/userController.js';
 
 dotenv.config();
 

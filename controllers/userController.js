@@ -106,7 +106,9 @@ export const emailCheck = async (req, res) => {
 export const signinUser = async (req, res) => {
     const userData = req.body;
     console.log(req.body);
-    const profileImagePath = req.file ? req.file.filename : null;
+    const profileImagePath = req.body.profileImage
+        ? req.body.profileImage
+        : null;
 
     if (!userData.username || !userData.email || !userData.password) {
         return res.status(400).json({ message: '필수 필드가 누락되었습니다.' });

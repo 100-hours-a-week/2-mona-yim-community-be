@@ -35,9 +35,10 @@ const upload = multer({
 
 // S3에 파일 업로드 함수
 const uploadFileToS3 = async (file) => {
+    const imageName = `${Date.now()}-${file.originalname}`;
     const params = {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
-        Key: `images/${Date.now()}-${file.originalname}`,
+        Key: `images/${imageName}`,
         Body: file.buffer,
         ContentType: file.mimetype,
     };
@@ -45,7 +46,7 @@ const uploadFileToS3 = async (file) => {
     const command = new PutObjectCommand(params);
     await s3.send(command);
 
-    return `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${params.Key}`;
+    return imageName;
 };
 
 // 라우터 설정
@@ -63,8 +64,8 @@ router.post(
             if (!req.file) {
                 return res.status(400).send({ error: 'No file uploaded' });
             }
-            const fileUrl = await uploadFileToS3(req.file);
-            req.body.profileImageUrl = fileUrl; // 업로드된 파일 URL을 다음 미들웨어로 전달
+            const imageName = await uploadFileToS3(req.file);
+            req.body.profileImage = imageName; // 업로드된 파일 URL을 다음 미들웨어로 전달
             next();
         } catch (error) {
             console.error(error);
@@ -81,8 +82,8 @@ router.patch(
     async (req, res, next) => {
         try {
             if (req.file) {
-                const fileUrl = await uploadFileToS3(req.file);
-                req.body.profileImageUrl = fileUrl; // 업로드된 파일 URL을 다음 미들웨어로 전달
+                const imageName = await uploadFileToS3(req.file);
+                req.body.profileImage = imageName; // 업로드된 파일 URL을 다음 미들웨어로 전달
             }
             next();
         } catch (error) {

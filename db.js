@@ -24,6 +24,6 @@ pool.query('SHOW TABLES', (error, results, fields) => {
     }
     console.log('Tables in the database:', results);
 });
-*/'mysql2/promise'
+*/ ('mysql2/promise');
 
 export default pool;

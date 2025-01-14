@@ -56,7 +56,7 @@ export const getPost = async (req, res) => {
 export const uploadPost = async (req, res) => {
     const userId = req.session.sessionId;
     const postData = req.body;
-    const postImagePath = req.file ? req.file.filename : null;
+    const postImagePath = req.body.postImage ? req.body.postImage : null;
     const newPostData = { ...postData, postImage: postImagePath };
 
     try {
@@ -77,7 +77,7 @@ export const editPost = async (req, res) => {
     const { id } = req.params;
     const postId = parseInt(id, 10);
     const postData = req.body;
-    const postImagePath = req.file ? req.file.filename : null;
+    const postImagePath = req.body.postImage ? req.body.postImage : null;
     const newPostData = { ...postData, postImage: postImagePath };
 
     if (isNaN(postId)) {

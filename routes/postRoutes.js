@@ -1,5 +1,8 @@
+/* eslint-disable no-undef */
 import express from 'express';
 import multer from 'multer';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import dotenv from 'dotenv';
 import {
     getPosts,
     getPost,
@@ -19,24 +22,82 @@ import {
     likeStatusPost,
 } from '../controllers/likeController.js';
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'images/');
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        cb(null, uniqueSuffix + '-' + file.originalname);
+dotenv.config();
+
+// AWS S3 설정
+const s3 = new S3Client({
+    region: process.env.AWS_REGION,
+    credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     },
 });
 
-const upload = multer({ storage });
+// Multer 설정 (로컬 메모리에 파일 저장)
+const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB 제한
+});
+
+// S3 업로드 함수
+const uploadFileToS3 = async (file) => {
+    const imageName = `${Date.now()}-${file.originalname}`;
+    const params = {
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: `uploads/${imageName}`,
+        Body: file.buffer,
+        ContentType: file.mimetype,
+        ACL: 'public-read', // ACL 설정 제거 가능 (필요에 따라 변경)
+    };
+
+    const command = new PutObjectCommand(params);
+    await s3.send(command);
+
+    return imageName;
+};
 
 const router = express.Router();
 
+// S3 업로드 미들웨어 통합
+router.post(
+    '/posts',
+    upload.single('postImage'),
+    async (req, res, next) => {
+        try {
+            if (req.file) {
+                const imageName = await uploadFileToS3(req.file);
+                req.body.postImage = imageName; // 업로드된 URL을 req.body에 추가
+            }
+            next();
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({ error: '파일 업로드 실패' });
+        }
+    },
+    uploadPost,
+);
+
+router.patch(
+    '/posts/:id',
+    upload.single('postImage'),
+    async (req, res, next) => {
+        try {
+            if (req.file) {
+                const imageName = await uploadFileToS3(req.file);
+                req.body.postImage = imageName; // 업로드된 URL을 req.body에 추가
+            }
+            next();
+        } catch (error) {
+            console.error(error);
+            res.status(500).send({ error: '파일 업로드 실패' });
+        }
+    },
+    editPost,
+);
+
+// 나머지 라우트
 router.get('/posts', getPosts);
-router.post('/posts', upload.single('postImage'), uploadPost);
 router.get('/posts/:id', getPost);
-router.patch('/posts/:id', upload.single('postImage'), editPost);
 router.delete('/posts/:id', removePost);
 
 router.get('/posts/:id/like', likeStatusPost);

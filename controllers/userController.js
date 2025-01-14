@@ -105,6 +105,7 @@ export const emailCheck = async (req, res) => {
  */
 export const signinUser = async (req, res) => {
     const userData = req.body;
+    console.log(req.body);
     const profileImagePath = req.file ? req.file.filename : null;
 
     if (!userData.username || !userData.email || !userData.password) {

@@ -44,7 +44,7 @@ const uploadFileToS3 = async (file) => {
     const imageName = `${Date.now()}-${file.originalname}`;
     const params = {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
-        Key: `uploads/${imageName}`,
+        Key: `images/${imageName}`,
         Body: file.buffer,
         ContentType: file.mimetype,
     };

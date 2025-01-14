@@ -15,10 +15,12 @@ const s3 = new S3Client({
 
 // S3 삭제 함수
 export async function deleteImage(imageName) {
-    console.log('들어옴');
-    if (imageName === null) return;
+    if (!imageName) {
+        console.error('imageName이 유효하지 않습니다:', imageName);
+        return;
+    }
     // S3에서 삭제할 Key 설정
-    const key = `uploads/${imageName}`;
+    const key = `images/${imageName}`;
     console.log(key);
     const params = {
         Bucket: process.env.AWS_S3_BUCKET_NAME,

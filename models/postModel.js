@@ -90,11 +90,8 @@ export async function deletePost(postId) {
             [postId],
         );
         const imageName = deleteImageName[0].postImage;
-        console.log(imageName);
-        console.log(typeof imageName);
         await deleteImage(imageName);
 
-        console.log('before');
         await pool.query(`DELETE FROM Posts WHERE postId = ?;`, [postId]);
     } catch (error) {
         console.error('게시글 삭제 에러: ', error);

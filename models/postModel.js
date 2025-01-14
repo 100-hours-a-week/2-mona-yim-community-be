@@ -85,6 +85,7 @@ export async function patchPost(postId, postData) {
 
 export async function deletePost(postId) {
     try {
+        console.log(postId);
         const [deleteImageName] = await pool.query(
             `SELECT postImage From Posts Where postId = ?;`,
             [postId],
@@ -93,6 +94,7 @@ export async function deletePost(postId) {
         deleteImage(deleteImageName[0].postImage);
 
         await pool.query(`DELETE FROM Posts WHERE postId = ?;`, [postId]);
+        console.log(postId);
     } catch (error) {
         console.error('게시글 삭제 에러: ', error);
         throw error;

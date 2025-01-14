@@ -153,7 +153,9 @@ export const editProfile = async (req, res) => {
     }
 
     const userData = req.body;
-    const profileImagePath = req.file ? req.file.filename : null;
+    const profileImagePath = req.body.profileImage
+        ? req.body.profileImage
+        : null;
     const newUserData = { ...userData, profileImage: profileImagePath };
 
     try {

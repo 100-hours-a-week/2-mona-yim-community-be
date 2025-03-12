@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(
     cors({
-        origin: 'http://43.201.75.102', // 클라이언트 주소
+        origin: 'http://43.201.75.102:4000', // 클라이언트 주소
         credentials: true, // 쿠키를 허용
     }),
 );
